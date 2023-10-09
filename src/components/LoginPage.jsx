@@ -1,6 +1,20 @@
+'use client';
+
+import { useRef } from 'react';
 import { LockClosedIcon } from '@heroicons/react/24/solid';
 
 export default function LoginPage() {
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const HandleOnSubmit = (event) => {
+    event.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    console.log(email, password);
+  };
+
   return (
     <>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -15,7 +29,7 @@ export default function LoginPage() {
               Sign in to your account
             </h2>
           </div>
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form className="mt-8 space-y-6" onSubmit={HandleOnSubmit}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
@@ -30,6 +44,7 @@ export default function LoginPage() {
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
+                  ref={emailRef}
                 />
               </div>
               <div>
@@ -44,6 +59,7 @@ export default function LoginPage() {
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
+                  ref={passwordRef}
                 />
               </div>
             </div>

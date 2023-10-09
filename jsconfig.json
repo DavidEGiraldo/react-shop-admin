@@ -4,7 +4,10 @@
     "paths": {
       "@/*": ["./app/*"],
       "@common/*": ["./common/*"],
-      "@components/*": ["./components/*"]
+      "@components/*": ["./components/*"],
+      "@contexts/*": ["./contexts/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@services/*": ["./services/*"],
     }
   }
 }
