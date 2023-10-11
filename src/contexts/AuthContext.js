@@ -1,20 +1,15 @@
-'use client'
+'use client';
 
-import { useContext, createContext } from "react";
+import { createContext } from 'react';
 
-import useAuth from "@hooks/useAuth";
+import useAuth from '@hooks/useAuth';
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
+function ProviderAuth({ children }) {
+  const auth = useAuth();
 
-export function ProviderAuth({ children }) {
-  const auth = useAuth()
-  
-  return (
-    <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 
-export const useProvideAuth = () => {
-  return useContext(AuthContext)
-}
+export { AuthContext, ProviderAuth };

@@ -2,17 +2,19 @@
 
 import { useRef } from 'react';
 import { LockClosedIcon } from '@heroicons/react/24/solid';
+import { useProviderAuth } from '@hooks/useProviderAuth';
 
 export default function LoginPage() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const { signIn } = useProviderAuth();
 
   const HandleOnSubmit = (event) => {
     event.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
-    console.log(email, password);
+    signIn(email, password);
   };
 
   return (
