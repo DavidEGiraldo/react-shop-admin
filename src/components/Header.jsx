@@ -3,13 +3,8 @@
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useProviderAuth } from '@hooks/useProviderAuth';
 
-const userData = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-};
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: true },
   { name: 'Productos', href: '/dashboard/products/', current: false },
@@ -26,6 +21,15 @@ function classNames(...classes) {
 }
 
 export default function Header() {
+  const { user } = useProviderAuth();
+
+  const userData = {
+    name: user?.name,
+    email: user?.email,
+    imageUrl:
+      user?.avatar ||
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png',
+  };
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">

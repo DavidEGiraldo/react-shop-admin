@@ -14,8 +14,22 @@ export default function useAuth() {
       },
       body: JSON.stringify({ email, password }),
     });
-    const { access_token } = await response.json();
-    console.log(access_token);
+    const { access_token: token } = await response.json();
+
+    if (!token) {
+      throw new Error('Invalid Username or Password');
+    }
+
+    Cookie.set('token', token, { expires: 5 });
+
+    const data = await fetch(endPoints.auth.profile, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    const profile = await data.json();
+
+    setUser(profile);
   };
 
   return {
