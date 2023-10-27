@@ -1,52 +1,42 @@
 'use client';
 
-import { useState } from 'react';
-import useFetch from '@hooks/useFetch';
+import { useState, useEffect } from 'react';
+import { PlusIcon } from '@heroicons/react/20/solid';
+import Modal from '@common/Modal';
+import Alert from '@common/Alert';
+import FormProduct from '@components/FormProduct';
 import endPoints from '@services/api';
-import Chart from '@common/Chart';
+import useAlert from '@hooks/useAlert';
+import useFetch from '@hooks/useFetch';
 
-import Pagination from '@components/Pagination';
+export default function products() {
+  const [open, setOpen] = useState(false);
+  const { alert, setAlert, toggleAlert } = useAlert();
 
-export default function Dashboard() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const onPageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const pageSize = 10;
-
-  const products = useFetch(
-    endPoints.products.getProducts(pageSize * (currentPage - 1), pageSize)
-  );
-
-  const categoryNames = products?.map((product) => product.category.name);
-
-  const countOccurrences = (arr) =>
-    arr.reduce((prev, curr) => {
-      prev[curr] = ++prev[curr] || 1;
-      return prev;
-    }, {});
-
-  const data = {
-    datasets: [
-      {
-        data: countOccurrences(categoryNames),
-        borderWidth: 2,
-        backgroundColor: [
-          '#ffbb11',
-          '#c0c0c0',
-          '#50af95',
-          '#f3ba2f',
-          '#2a71d0',
-        ],
-      },
-    ],
-  };
+  const products = useFetch(endPoints.products.getAllProducts, alert);
 
   return (
     <>
-      <Chart className="max-h-[50vh]" chartData={data} />
+      <Alert alert={alert} handleClose={toggleAlert} />
+      <div className="lg:flex lg:items-center lg:justify-between mb-8 px-4 sm:px-6 lg:px-8">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+            List of Products
+          </h2>
+        </div>
+        <div className="mt-5 flex lg:ml-4 lg:mt-0">
+          <span className="sm:ml-3">
+            <button
+              type="button"
+              className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={() => setOpen(true)}
+            >
+              <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+              Add Product
+            </button>
+          </span>
+        </div>
+      </div>
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -138,11 +128,13 @@ export default function Dashboard() {
                   ))}
                 </tbody>
               </table>
-              <Pagination props={{ currentPage, onPageChange, pageSize }} />
             </div>
           </div>
         </div>
       </div>
+      <Modal open={open} setOpen={setOpen} title="Add Product">
+        <FormProduct setOpen={setOpen} setAlert={setAlert} />
+      </Modal>
     </>
   );
 }

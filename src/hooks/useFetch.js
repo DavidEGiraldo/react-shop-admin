@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export default function useFetch(endpoint) {
+export default function useFetch(endpoint, alert = false) {
   const [data, setData] = useState([]);
 
   async function fetchData() {
@@ -17,7 +17,7 @@ export default function useFetch(endpoint) {
     } catch (error) {
       console.error(error);
     }
-  }, [endpoint]);
+  }, [endpoint, alert]);
 
   return data;
 }
