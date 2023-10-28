@@ -1,19 +1,42 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { PlusIcon } from '@heroicons/react/20/solid';
+import { useState } from 'react';
+import { PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
 import Modal from '@common/Modal';
 import Alert from '@common/Alert';
 import FormProduct from '@components/FormProduct';
 import endPoints from '@services/api';
 import useAlert from '@hooks/useAlert';
 import useFetch from '@hooks/useFetch';
+import { deleteProduct } from '@services/api/products';
 
 export default function products() {
   const [open, setOpen] = useState(false);
   const { alert, setAlert, toggleAlert } = useAlert();
 
   const products = useFetch(endPoints.products.getAllProducts, alert);
+
+  const handleDelete = (id) => {
+    deleteProduct(id)
+      .then(() => {
+        setAlert({
+          active: true,
+          title: id,
+          message: 'Product deleted successfully',
+          type: 'warning',
+          autoClose: true,
+        });
+      })
+      .catch((error) => {
+        setAlert({
+          active: true,
+          title: 'Error deleting product',
+          message: error.message,
+          type: 'error',
+          autoClose: true,
+        });
+      });
+  };
 
   return (
     <>
@@ -117,12 +140,11 @@ export default function products() {
                         </a>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-red-600 hover:text-red-900 "
-                        >
-                          Delete
-                        </a>
+                        <TrashIcon
+                          aria-hidden="true"
+                          className="flex-shrink-0 h-5 w-5 text-red-600 hover:text-red-900 cursor-pointer"
+                          onClick={() => handleDelete(product.id)}
+                        />
                       </td>
                     </tr>
                   ))}

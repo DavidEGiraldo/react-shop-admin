@@ -1,8 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { addProduct } from '@services/api/products';
 
-export default function FormProduct({ setOpen, setAlert }) {
+export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = useRef(null);
+  const [selected, setSelected] = useState('placeholder');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -52,6 +53,7 @@ export default function FormProduct({ setOpen, setAlert }) {
               </label>
               <input
                 type="text"
+                defaultValue={product?.title}
                 name="title"
                 id="title"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -70,6 +72,7 @@ export default function FormProduct({ setOpen, setAlert }) {
               <input
                 type="number"
                 name="price"
+                defaultValue={product?.price}
                 id="price"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 required
@@ -88,11 +91,14 @@ export default function FormProduct({ setOpen, setAlert }) {
                 id="category"
                 name="category"
                 autoComplete="category-name"
-                defaultValue=""
+                value={
+                  product?.category ? product.category.id.toString() : selected
+                }
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 required
+                onChange={(e) => setSelected(e.target.value)}
               >
-                <option value="" disabled>
+                <option value="placeholder" disabled hidden>
                   --Select--
                 </option>
                 <option value="1">Clothes</option>
@@ -113,6 +119,7 @@ export default function FormProduct({ setOpen, setAlert }) {
               <textarea
                 name="description"
                 id="description"
+                defaultValue={product?.description}
                 autoComplete="description"
                 rows="3"
                 className="form-textarea mt-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -151,6 +158,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                         <input
                           id="images"
                           name="images"
+                          defaultValue={product?.images}
                           type="file"
                           className="sr-only"
                           required

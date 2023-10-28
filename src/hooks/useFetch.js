@@ -7,6 +7,9 @@ export default function useFetch(endpoint, alert = false) {
 
   async function fetchData() {
     const response = await fetch(endpoint);
+    if (!response.ok) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
     const data = await response.json();
     setData(data);
   }
@@ -15,7 +18,7 @@ export default function useFetch(endpoint, alert = false) {
     try {
       fetchData();
     } catch (error) {
-      console.error(error);
+      return error.message;
     }
   }, [endpoint, alert]);
 

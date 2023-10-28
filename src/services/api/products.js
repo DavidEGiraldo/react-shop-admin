@@ -24,4 +24,25 @@ const addProduct = async (body) => {
   }
 };
 
-export { addProduct };
+const deleteProduct = async (id) => {
+  try {
+    const config = {
+      method: 'DELETE',
+      headers: {
+        accept: '*/*',
+      },
+    };
+
+    const response = await fetch(endPoints.products.deleteProduct(id), config);
+
+    if (!response.ok) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export { addProduct, deleteProduct };

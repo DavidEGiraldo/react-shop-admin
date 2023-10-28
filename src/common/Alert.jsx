@@ -6,16 +6,19 @@ export default function Alert({ alert, handleClose }) {
       handleClose();
     }, 10000);
   }
-  const colors =
-    alert.type === 'success'
-      ? 'bg-green-100 border-green-400 text-green-700'
-      : 'bg-red-100 border border-red-400 text-red-700';
+  const colors = {
+    success: 'bg-green-100 border border-green-400 text-green-700',
+    error: 'bg-red-100 border border-red-400 text-red-700',
+    warning: 'bg-orange-100 border border-orange-400 text-orange-700',
+  };
 
   return (
     <>
       {alert?.active && (
         <div
-          className={`${colors} px-4 py-3 rounded relative mb-8`}
+          className={`${
+            colors[alert.type]
+          } px-4 py-3 rounded sticky top-8 mb-8`}
           role="alert"
         >
           <strong className="font-bold capitalize">{alert.title}</strong>
