@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
+import { PlusIcon, TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 import Modal from '@common/Modal';
 import Alert from '@common/Alert';
 import FormProduct from '@components/FormProduct';
@@ -14,7 +15,7 @@ export default function products() {
   const [open, setOpen] = useState(false);
   const { alert, setAlert, toggleAlert } = useAlert();
 
-  const products = useFetch(endPoints.products.getAllProducts, alert);
+  const products = useFetch(endPoints.products.getAllProducts);
 
   const handleDelete = (id) => {
     deleteProduct(id)
@@ -132,17 +133,17 @@ export default function products() {
                         {product.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
+                        <Link
+                          href={`products/edit/${product.id}`}
+                          className="text-gray-600 hover:text-indigo-600"
                         >
-                          Edit
-                        </a>
+                          <PencilSquareIcon className='h-5 w-5'/>
+                        </Link>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <TrashIcon
                           aria-hidden="true"
-                          className="flex-shrink-0 h-5 w-5 text-red-600 hover:text-red-900 cursor-pointer"
+                          className="flex-shrink-0 h-5 w-5 text-gray-600 hover:text-red-600 cursor-pointer"
                           onClick={() => handleDelete(product.id)}
                         />
                       </td>

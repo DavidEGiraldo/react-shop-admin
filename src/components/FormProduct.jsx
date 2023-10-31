@@ -1,9 +1,17 @@
-import { useRef, useState } from 'react';
-import { addProduct } from '@services/api/products';
+'use client'
+
+import { useEffect, useRef, useState } from 'react';
+import { addProduct, updateProduct } from '@services/api/products';
+import { useRouter } from 'next/navigation';
 
 export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = useRef(null);
   const [selected, setSelected] = useState('placeholder');
+  const router = useRouter()
+
+  useEffect(()=>{
+    setSelected(product?.category?.id)
+  }, [product])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,27 +25,35 @@ export default function FormProduct({ setOpen, setAlert, product }) {
         'https://images.pexels.com/photos/18491459/pexels-photo-18491459/free-photo-of-blanco-y-negro-bicicleta-transporte-recreacion.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       ],
     };
-    addProduct(data)
-      .then((response) => {
-        setAlert({
-          active: true,
-          title: response.title,
-          message: 'Product added successfully',
-          type: 'success',
-          autoClose: true,
+
+    if (product) {
+      updateProduct(product.id, data)
+        .then(() => router.push("/dashboard/products"))
+    } else {
+      addProduct(data)
+        .then((response) => {
+          setAlert({
+            active: true,
+            title: response.title,
+            message: 'Product added successfully',
+            type: 'success',
+            autoClose: true,
+          });
+          setOpen(false);
+        })
+        .catch((error) => {
+          setAlert({
+            active: true,
+            title: 'Error adding product',
+            message: error.message,
+            type: 'error',
+            autoClose: true,
+          });
+          setOpen(false);
         });
-        setOpen(false);
-      })
-      .catch((error) => {
-        setAlert({
-          active: true,
-          title: 'Error adding product',
-          message: error.message,
-          type: 'error',
-          autoClose: true,
-        });
-        setOpen(false);
-      });
+
+    }
+
   };
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
@@ -91,9 +107,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                 id="category"
                 name="category"
                 autoComplete="category-name"
-                value={
-                  product?.category ? product.category.id.toString() : selected
-                }
+                value={selected}
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 required
                 onChange={(e) => setSelected(e.target.value)}
@@ -162,6 +176,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                           type="file"
                           className="sr-only"
                           required
+                          multiple
                           accept="image/png, image/jpeg, image/jpg, image/gif"
                         />
                       </label>

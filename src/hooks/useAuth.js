@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import Cookie from 'js-cookie';
 import endPoints from '@services/api';
+import { useRouter } from 'next/navigation';
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
+  const router = useRouter()
 
   const signIn = async (email, password) => {
     const response = await fetch(endPoints.auth.login, {
@@ -32,8 +34,15 @@ export default function useAuth() {
     setUser(profile);
   };
 
+  const logout = () => {
+    Cookie.remove('token')
+    setUser(null)
+    router.push("/login")
+  }
+
   return {
     user,
     signIn,
+    logout
   };
 }

@@ -8,17 +8,16 @@ export default function useFetch(endpoint, alert = false) {
   async function fetchData() {
     const response = await fetch(endpoint);
     if (!response.ok) {
-      throw new Error(`${response.status} - ${response.statusText}`);
+      setData(undefined);
     }
-    const data = await response.json();
-    setData(data);
+    setData(await response.json());
   }
 
   useEffect(() => {
     try {
       fetchData();
     } catch (error) {
-      return error.message;
+      console.error(error.message)
     }
   }, [endpoint, alert]);
 

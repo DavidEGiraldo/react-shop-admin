@@ -1,19 +1,16 @@
 'use client';
 
 import { Fragment } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useProviderAuth } from '@hooks/useProviderAuth';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', current: true },
-  { name: 'Productos', href: '/dashboard/products/', current: false },
-  { name: 'Ventas', href: '/', current: false },
-];
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Home', href: '/'},
+  { name: 'Dashboard', href: '/dashboard' },
+  { name: 'Products', href: '/dashboard/products' },
 ];
 
 function classNames(...classes) {
@@ -21,7 +18,8 @@ function classNames(...classes) {
 }
 
 export default function Header() {
-  const { user } = useProviderAuth();
+  const { user, logout } = useProviderAuth();
+  const pathname = usePathname()
 
   const userData = {
     name: user?.name,
@@ -32,7 +30,7 @@ export default function Header() {
   };
   return (
     <>
-      <Disclosure as="nav" className="bg-gray-800">
+      <Disclosure as="nav" className="relative bg-gray-800 z-20">
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,26 +39,17 @@ export default function Header() {
                   <div className="flex-shrink-0">
                     <img
                       className="h-8 w-8"
-                      src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
+                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                       alt="Workflow"
                     />
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
                       {navigation.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className={classNames(
-                            item.current
-                              ? 'bg-gray-900 text-white'
-                              : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                            'px-3 py-2 rounded-md text-sm font-medium'
-                          )}
-                          aria-current={item.current ? 'page' : undefined}
-                        >
+                        <Link key={item.name} href={item.href} className={classNames((pathname === item.href) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                        'px-3 py-2 rounded-md text-sm font-medium')} aria-current={(pathname === item.href) ? 'page' : undefined}>
                           {item.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -97,21 +86,12 @@ export default function Header() {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          {userNavigation.map((item) => (
-                            <Menu.Item key={item.name}>
-                              {({ active }) => (
-                                <a
-                                  href={item.href}
-                                  className={classNames(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
-                                  )}
-                                >
-                                  {item.name}
-                                </a>
-                              )}
-                            </Menu.Item>
-                          ))}
+                          <button
+                            className='block px-4 py-2 text-sm text-gray-700'
+                            onClick={() => logout()}
+                          >
+                            Sign Out
+                          </button>
                         </Menu.Items>
                       </Transition>
                     </Menu>
@@ -139,12 +119,12 @@ export default function Header() {
                     as="a"
                     href={item.href}
                     className={classNames(
-                      item.current
+                      (pathname === item.href)
                         ? 'bg-gray-900 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                       'block px-3 py-2 rounded-md text-base font-medium'
                     )}
-                    aria-current={item.current ? 'page' : undefined}
+                    aria-current={(pathname === item.href) ? 'page' : undefined}
                   >
                     {item.name}
                   </Disclosure.Button>
@@ -176,16 +156,13 @@ export default function Header() {
                   </button>
                 </div>
                 <div className="mt-3 px-2 space-y-1">
-                  {userNavigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
+                  <Disclosure.Button
+                    as="a"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
+                    onClick={() => logout()}
+                  >
+                    Sign Out
+                  </Disclosure.Button>
                 </div>
               </div>
             </Disclosure.Panel>

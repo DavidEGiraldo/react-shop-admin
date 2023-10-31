@@ -45,4 +45,27 @@ const deleteProduct = async (id) => {
   }
 };
 
-export { addProduct, deleteProduct };
+const updateProduct = async (id, body) => {
+  try {
+    const config = {
+      method: 'PUT',
+      headers: {
+        accept: '*/*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    };
+    const response = await fetch(endPoints.products.putProducts(id), config);
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+
+    return responseData;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export { addProduct, deleteProduct, updateProduct };
