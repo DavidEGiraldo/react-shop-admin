@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import useFetch from '@hooks/useFetch';
 import endPoints from '@services/api';
 import Chart from '@common/Chart';
-
 import Pagination from '@components/Pagination';
 
 export default function Dashboard() {
@@ -20,7 +20,10 @@ export default function Dashboard() {
     endPoints.products.getProducts(pageSize * (currentPage - 1), pageSize)
   );
 
-  const categoryNames = products?.map((product) => product.category.name);
+  const allProducts = useFetch(endPoints.products.getAllProducts);
+  const totalCount = allProducts.length;
+
+  const categoryNames = (arr) => arr?.map((product) => product.category.name);
 
   const countOccurrences = (arr) =>
     arr.reduce((prev, curr) => {
@@ -29,17 +32,28 @@ export default function Dashboard() {
     }, {});
 
   const data = {
+    labels: Object.keys(countOccurrences(categoryNames(products))),
     datasets: [
       {
-        data: countOccurrences(categoryNames),
+        data: Object.values(countOccurrences(categoryNames(products))),
         borderWidth: 2,
         backgroundColor: [
-          '#ffbb11',
-          '#c0c0c0',
-          '#50af95',
-          '#f3ba2f',
-          '#2a71d0',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
         ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        hoverOffset: 10,
       },
     ],
   };
@@ -78,12 +92,6 @@ export default function Dashboard() {
                     >
                       Id
                     </th>
-                    <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Edit</span>
-                    </th>
-                    <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Delete</span>
-                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -91,11 +99,13 @@ export default function Dashboard() {
                     <tr key={product.id}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <img
+                          <div className="flex-shrink-0 h-10 w-10 relative">
+                            <Image
                               className="h-10 w-10 rounded-full"
                               src={product.images[0]}
-                              alt={`Product image ${product.id}`}
+                              alt={`Product ${product.id}`}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              fill={true}
                             />
                           </div>
                           <div className="ml-4">
@@ -118,27 +128,13 @@ export default function Dashboard() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 overflow-hidden">
                         {product.id}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Edit
-                        </a>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-red-600 hover:text-red-900 "
-                        >
-                          Delete
-                        </a>
-                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <Pagination props={{ currentPage, onPageChange, pageSize }} />
+              <Pagination
+                props={{ currentPage, onPageChange, pageSize, totalCount }}
+              />
             </div>
           </div>
         </div>

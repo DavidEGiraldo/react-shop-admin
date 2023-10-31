@@ -6,16 +6,11 @@ import endPoints from '@services/api';
 import { redirect } from 'next/navigation';
 
 export default function Edit({ params }) {
-  
   const product = useFetch(endPoints.products.getProduct(params.id));
 
   if (!product) {
-    redirect('/dashboard/products')
+    redirect('/dashboard/products');
   }
 
-  return (
-    <>
-      {product && <FormProduct product={product} />}
-    </>
-  );
+  return <>{product && <FormProduct product={product} />}</>;
 }

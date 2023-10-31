@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
-  const router = useRouter()
+  const router = useRouter();
 
   const signIn = async (email, password) => {
     const response = await fetch(endPoints.auth.login, {
@@ -35,14 +35,14 @@ export default function useAuth() {
   };
 
   const logout = () => {
-    Cookie.remove('token')
-    setUser(null)
-    router.push("/login")
-  }
+    Cookie.remove('token');
+    setUser(null);
+    router.push('/login');
+  };
 
   return {
     user,
     signIn,
-    logout
+    logout,
   };
 }

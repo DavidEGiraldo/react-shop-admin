@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import { addProduct, updateProduct } from '@services/api/products';
@@ -7,11 +7,11 @@ import { useRouter } from 'next/navigation';
 export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = useRef(null);
   const [selected, setSelected] = useState('placeholder');
-  const router = useRouter()
+  const router = useRouter();
 
-  useEffect(()=>{
-    setSelected(product?.category?.id)
-  }, [product])
+  useEffect(() => {
+    setSelected(product?.category?.id);
+  }, [product]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,8 +27,9 @@ export default function FormProduct({ setOpen, setAlert, product }) {
     };
 
     if (product) {
-      updateProduct(product.id, data)
-        .then(() => router.push("/dashboard/products"))
+      updateProduct(product.id, data).then(() =>
+        router.push('/dashboard/products')
+      );
     } else {
       addProduct(data)
         .then((response) => {
@@ -51,9 +52,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
           });
           setOpen(false);
         });
-
     }
-
   };
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
@@ -144,9 +143,9 @@ export default function FormProduct({ setOpen, setAlert, product }) {
             </div>
             <div className="col-span-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <p className="block text-sm font-medium text-gray-700">
                   Cover photo
-                </label>
+                </p>
                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                   <div className="space-y-1 text-center">
                     <svg

@@ -1,8 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { PlusIcon, TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
+import {
+  PlusIcon,
+  TrashIcon,
+  PencilSquareIcon,
+} from '@heroicons/react/20/solid';
 import Modal from '@common/Modal';
 import Alert from '@common/Alert';
 import FormProduct from '@components/FormProduct';
@@ -11,11 +16,11 @@ import useAlert from '@hooks/useAlert';
 import useFetch from '@hooks/useFetch';
 import { deleteProduct } from '@services/api/products';
 
-export default function products() {
+export default function Products() {
   const [open, setOpen] = useState(false);
   const { alert, setAlert, toggleAlert } = useAlert();
 
-  const products = useFetch(endPoints.products.getAllProducts);
+  const products = useFetch(endPoints.products.getAllProducts, alert);
 
   const handleDelete = (id) => {
     deleteProduct(id)
@@ -105,11 +110,13 @@ export default function products() {
                     <tr key={product.id}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <img
+                          <div className="flex-shrink-0 h-10 w-10 relative">
+                            <Image
                               className="h-10 w-10 rounded-full"
                               src={product.images[0]}
-                              alt={`Product image ${product.id}`}
+                              alt={`Product ${product.id}`}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              fill={true}
                             />
                           </div>
                           <div className="ml-4">
@@ -137,7 +144,7 @@ export default function products() {
                           href={`products/edit/${product.id}`}
                           className="text-gray-600 hover:text-indigo-600"
                         >
-                          <PencilSquareIcon className='h-5 w-5'/>
+                          <PencilSquareIcon className="h-5 w-5" />
                         </Link>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

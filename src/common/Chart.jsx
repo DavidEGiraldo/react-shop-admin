@@ -1,26 +1,11 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Title, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Title, Tooltip, Legend);
 
 export default function Chart({ chartData, className }) {
   return (
-    <Bar
+    <Pie
       className={className}
       data={chartData}
       options={{
@@ -33,8 +18,8 @@ export default function Chart({ chartData, className }) {
             },
           },
           legend: {
-            display: false,
-            position: 'right',
+            display: true,
+            position: 'top',
           },
         },
         layout: {

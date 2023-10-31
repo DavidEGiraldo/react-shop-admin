@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
@@ -8,7 +9,7 @@ import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useProviderAuth } from '@hooks/useProviderAuth';
 
 const navigation = [
-  { name: 'Home', href: '/'},
+  { name: 'Home', href: '/' },
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Products', href: '/dashboard/products' },
 ];
@@ -19,7 +20,7 @@ function classNames(...classes) {
 
 export default function Header() {
   const { user, logout } = useProviderAuth();
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const userData = {
     name: user?.name,
@@ -36,18 +37,31 @@ export default function Header() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="h-8 w-8"
+                  <div className="flex-shrink-0 relative h-8 w-8">
+                    <Image
                       src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                       alt="Workflow"
+                      fill={true}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={true}
                     />
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
                       {navigation.map((item) => (
-                        <Link key={item.name} href={item.href} className={classNames((pathname === item.href) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'px-3 py-2 rounded-md text-sm font-medium')} aria-current={(pathname === item.href) ? 'page' : undefined}>
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className={classNames(
+                            pathname === item.href
+                              ? 'bg-gray-900 text-white'
+                              : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                            'px-3 py-2 rounded-md text-sm font-medium'
+                          )}
+                          aria-current={
+                            pathname === item.href ? 'page' : undefined
+                          }
+                        >
                           {item.name}
                         </Link>
                       ))}
@@ -67,12 +81,13 @@ export default function Header() {
                     {/* Profile dropdown */}
                     <Menu as="div" className="ml-3 relative">
                       <div>
-                        <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white h-8 w-8 relative">
                           <span className="sr-only">Open user menu</span>
-                          <img
-                            className="h-8 w-8 rounded-full"
+                          <Image
                             src={userData.imageUrl}
                             alt=""
+                            fill={true}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                         </Menu.Button>
                       </div>
@@ -87,7 +102,7 @@ export default function Header() {
                       >
                         <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <button
-                            className='block px-4 py-2 text-sm text-gray-700'
+                            className="block px-4 py-2 text-sm text-gray-700"
                             onClick={() => logout()}
                           >
                             Sign Out
@@ -119,12 +134,12 @@ export default function Header() {
                     as="a"
                     href={item.href}
                     className={classNames(
-                      (pathname === item.href)
+                      pathname === item.href
                         ? 'bg-gray-900 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                       'block px-3 py-2 rounded-md text-base font-medium'
                     )}
-                    aria-current={(pathname === item.href) ? 'page' : undefined}
+                    aria-current={pathname === item.href ? 'page' : undefined}
                   >
                     {item.name}
                   </Disclosure.Button>
@@ -132,11 +147,12 @@ export default function Header() {
               </div>
               <div className="pt-4 pb-3 border-t border-gray-700">
                 <div className="flex items-center px-5">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="h-10 w-10 rounded-full"
+                  <div className="flex-shrink-0 relative h-10 w-10 rounded-full">
+                    <Image
                       src={userData.imageUrl}
                       alt=""
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      fill={true}
                     />
                   </div>
                   <div className="ml-3">

@@ -18,7 +18,7 @@ export default function Alert({ alert, handleClose }) {
         <div
           className={`${
             colors[alert.type]
-          } px-4 py-3 rounded sticky top-8 mb-8`}
+          } px-4 py-3 rounded sticky top-8 mb-8 z-20`}
           role="alert"
         >
           <strong className="font-bold capitalize">{alert.title}</strong>
@@ -26,15 +26,12 @@ export default function Alert({ alert, handleClose }) {
             {' - '}
             {alert.message}
           </span>
-          <span
+          <button
             className="absolute top-0 bottom-0 right-0 px-4 py-3"
             onClick={handleClose}
           >
-            <XMarkIcon
-              className="fill-current h-6 w-6 text-current"
-              role="button"
-            />
-          </span>
+            <XMarkIcon className="fill-current h-6 w-6 text-current" />
+          </button>
         </div>
       )}
     </>
