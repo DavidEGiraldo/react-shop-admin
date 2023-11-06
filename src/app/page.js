@@ -45,7 +45,7 @@ export default function Home() {
                   Get started
                 </a>
                 <a
-                  href="/login"
+                  href="https://github.com/DavidEGiraldo/react-shop-admin"
                   className="text-sm font-semibold leading-6 text-gray-900"
                 >
                   GitHub <span aria-hidden="true">→</span>

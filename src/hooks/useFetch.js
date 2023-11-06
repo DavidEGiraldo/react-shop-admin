@@ -10,14 +10,11 @@ export default function useFetch(endpoint, alert = undefined) {
       const response = await fetch(endpoint);
       if (!response.ok) {
         setData(undefined);
+        return;
       }
       setData(await response.json());
     }
-    try {
-      fetchData();
-    } catch (error) {
-      console.error(error.message);
-    }
+    fetchData();
   }, [endpoint, alert]);
 
   return data;

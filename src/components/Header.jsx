@@ -22,16 +22,9 @@ export default function Header() {
   const { user, logout } = useProviderAuth();
   const pathname = usePathname();
 
-  const userData = {
-    name: user?.name,
-    email: user?.email,
-    imageUrl:
-      user?.avatar ||
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png',
-  };
   return (
     <>
-      <Disclosure as="nav" className="relative bg-gray-800 z-20">
+      <Disclosure as="nav" className="relative bg-gray-800 z-30">
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,31 +77,38 @@ export default function Header() {
                         <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white h-8 w-8 relative">
                           <span className="sr-only">Open user menu</span>
                           <Image
-                            src={userData.imageUrl}
+                            className="rounded-full"
+                            src={
+                              user
+                                ? user.avatar
+                                : 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'
+                            }
                             alt=""
                             fill={true}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                         </Menu.Button>
                       </div>
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <button
-                            className="block px-4 py-2 text-sm text-gray-700"
-                            onClick={() => logout()}
-                          >
-                            Sign Out
-                          </button>
-                        </Menu.Items>
-                      </Transition>
+                      {user && (
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <button
+                              className="block px-4 py-2 text-sm text-gray-700"
+                              onClick={() => logout()}
+                            >
+                              Sign Out
+                            </button>
+                          </Menu.Items>
+                        </Transition>
+                      )}
                     </Menu>
                   </div>
                 </div>
@@ -149,7 +149,12 @@ export default function Header() {
                 <div className="flex items-center px-5">
                   <div className="flex-shrink-0 relative h-10 w-10 rounded-full">
                     <Image
-                      src={userData.imageUrl}
+                      className="rounded-full"
+                      src={
+                        user
+                          ? user.avatar
+                          : 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'
+                      }
                       alt=""
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       fill={true}
@@ -157,10 +162,10 @@ export default function Header() {
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium leading-none text-white">
-                      {userData.name}
+                      {user ? user.name : ''}
                     </div>
                     <div className="text-sm font-medium leading-none text-gray-400">
-                      {userData.email}
+                      {user ? user.email : ''}
                     </div>
                   </div>
                   <button
@@ -171,15 +176,17 @@ export default function Header() {
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
-                <div className="mt-3 px-2 space-y-1">
-                  <Disclosure.Button
-                    as="a"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
-                    onClick={() => logout()}
-                  >
-                    Sign Out
-                  </Disclosure.Button>
-                </div>
+                {user && (
+                  <div className="mt-3 px-2 space-y-1">
+                    <Disclosure.Button
+                      as="a"
+                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 cursor-pointer"
+                      onClick={() => logout()}
+                    >
+                      Sign Out
+                    </Disclosure.Button>
+                  </div>
+                )}
               </div>
             </Disclosure.Panel>
           </>

@@ -11,7 +11,6 @@ const addProduct = async (body) => {
       body: JSON.stringify(body),
     };
     const response = await fetch(endPoints.products.postProducts, config);
-    console.log(response);
     const responseData = await response.json();
 
     if (!response.ok) {

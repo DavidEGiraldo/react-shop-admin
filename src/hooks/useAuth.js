@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Cookie from 'js-cookie';
 import endPoints from '@services/api';
 import { useRouter } from 'next/navigation';
@@ -22,7 +22,7 @@ export default function useAuth() {
       throw new Error('Invalid Username or Password');
     }
 
-    Cookie.set('token', token, { expires: 5 });
+    Cookie.set('token', token, { expires: 20 });
 
     const data = await fetch(endPoints.auth.profile, {
       headers: {
@@ -39,6 +39,28 @@ export default function useAuth() {
     setUser(null);
     router.push('/login');
   };
+
+  useEffect(() => {
+    async function getUser() {
+      const token = Cookie.get('token');
+      if (!token) {
+        setUser(null);
+        return;
+      }
+      const response = await fetch(endPoints.auth.profile, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        setUser(null);
+        return;
+      }
+      setUser(await response.json());
+    }
+
+    getUser();
+  }, []);
 
   return {
     user,
