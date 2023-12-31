@@ -9,7 +9,7 @@ React-Shop-Admin es una aplicación web para la administración de los productos
 - Autenticación de usuario con JWT y Cookies.
 - Gráficos para análisis de datos.
 - Los datos de los productos son obtenidos a través de la API [https://fakeapi.platzi.com/](https://fakeapi.platzi.com/).
-- Despliegue en línea: Visita la [demostración]([https://davidegiraldo.github.io/todo-machine/](https://degiraldod-react-shop-admin.vercel.app/)) en Vercel.
+- Despliegue en línea: Visita la [demostración](https://degiraldod-react-shop-admin.vercel.app/) en Vercel.
 
 ## Contribuciones
 
@@ -18,7 +18,7 @@ Las contribuciones son bienvenidas y apreciadas. Si encuentras errores, tienes i
 ## Enlaces útiles
 
 - [Documentación de React](https://reactjs.org/docs/getting-started.html)
-- [Documentación Create React App]([https://github.com/facebook/create-react-app](https://nextjs.org/docs))
+- [Documentación de Next](https://nextjs.org/docs)
 - [Documentación de Tailwind CSS](https://tailwindcss.com/docs)
   
 ## Créditos
