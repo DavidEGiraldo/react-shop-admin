@@ -1,3 +1,35 @@
+# React-Shop-Admin
+
+React-Shop-Admin es una aplicación web para la administración de los productos de un E-commerce de manera sencilla, eficiente y amigable con el usuario. Desarrollada con React, HTML y Tailwing CSS utilizando Next.js, esta herramienta te permite gestionar el inventario de un E-commerce de forma intuitiva y rápida.
+
+## Características principales
+
+- Explora, agrega, edita y elimina productos.
+- Interfaz de usuario amigable, receptiva y responsiva.
+- Autenticación de usuario con JWT y Cookies.
+- Gráficos para análisis de datos.
+- Los datos de los productos son obtenidos a través de la API [https://fakeapi.platzi.com/](https://fakeapi.platzi.com/).
+- Despliegue en línea: Visita la [demostración]([https://davidegiraldo.github.io/todo-machine/](https://degiraldod-react-shop-admin.vercel.app/)) en Vercel.
+
+## Contribuciones
+
+Las contribuciones son bienvenidas y apreciadas. Si encuentras errores, tienes ideas para nuevas características o mejoras, por favor, abre un "Issue" o envía un "Pull Request". 
+
+## Enlaces útiles
+
+- [Documentación de React](https://reactjs.org/docs/getting-started.html)
+- [Documentación Create React App]([https://github.com/facebook/create-react-app](https://nextjs.org/docs))
+- [Documentación de Tailwind CSS](https://tailwindcss.com/docs)
+  
+## Créditos
+
+Este proyecto fue desarrollado por [David Giraldo](https://github.com/DavidEGiraldo).
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT. Siéntete libre de utilizar el código en tus propios proyectos y modificarlo según tus necesidades.
+
+------------------
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
